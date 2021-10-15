@@ -7,7 +7,7 @@ class DogSerializer (serializers.ModelSerializer):
     dog_id = serializers.IntegerField(read_only = True)
     class Meta:
         model = Dog
-        fields = ['dog_id','price','category_name','category_id']
+        fields = ['dog_id','price','quantity','category_name','category_id']
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,9 +20,6 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ['client_id','client_name']
 
 class OrderSerializer(serializers.ModelSerializer):
-    ''' client_id = serializers.IntegerField()
-    dog_id = serializers.IntegerField()
-    price = serializers.FloatField()'''
     class Meta:
         model = Order
         fields = ['client_id','dog_id','price']

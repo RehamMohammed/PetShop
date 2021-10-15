@@ -54,7 +54,7 @@ def dog_detail(request, pk):
 @api_view(['GET','POST'])
 def make_order(request, format= None):
     """
-    List all orderss, or create a new order.
+    List all orders, or create a new order.
     """
     if request.method == 'GET':
         orders = Order.objects.all()
@@ -62,13 +62,15 @@ def make_order(request, format= None):
         return Response(serializer.data)
 
     elif request.method == 'POST':
+        from django.shortcuts import get_object_or_404
         serializer = OrderSerializer(data=request.data)
+        dog_id = request.data.get('dog_id')
+        dog_obj = get_object_or_404(Dog, dog_id = dog_id)
+        if dog_obj.quantity < 1 :
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
-            dogId = serializer.validated_data['dog_id']
-            ''' dogs = Dog.objects.all()
-            serializer1 = DogSerializer(dogs, many=True)
-            dogList.append(serializer1.data[0])'''
-            
+            dog_obj.quantity = dog_obj.quantity - 1
+            dog_obj.save(update_fields=['quantity'])
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -5,6 +5,7 @@ from django.db import models
 class Dog (models.Model):
     dog_id = models.IntegerField()
     price = models.CharField(max_length=10)
+    quantity = models.IntegerField(default=1)
     category_name = models.TextField(max_length=250)
     category_id = models.IntegerField()
 
@@ -24,5 +25,5 @@ class Order (models.Model):
     client_id = models.IntegerField()
     dog_id = models.IntegerField()
     price = models.CharField(max_length=10)
-
+    
     #client_id = models.ForeignKey('auth.Client', related_name='petshop', on_delete=models.CASCADE)
